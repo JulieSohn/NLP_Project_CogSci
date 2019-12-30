@@ -1,0 +1,81 @@
+---
+title: "Sentiment Analysis"
+output: html_document
+---
+Get Sentida from Github folder
+```{r}
+sentida_path <- "/Users/juliesohn/Downloads/Sentida-master/R/"
+
+sentida_file <- paste0(sentida_path, "sysdata.rda")
+sentida_script <- paste0(sentida_path, "Sentida.R")
+load(sentida_file)
+source(sentida_script)
+```
+
+Load data and packages
+```{r}
+setwd("~/Documents/Cognitive Science/Kandidat/1_Semester/NLP/Exam Project/NLP_Project/1_Pre-processing")
+#setwd("~/Desktop/CogSci/NLP/NLP_Project/Sentiment_analysis")
+
+library(readr)
+
+data <- read_csv("~/Documents/Cognitive Science/Kandidat/1_Semester/NLP/Exam Project/NLP_Project/4_Sentiment_analysis/topic_categorized_reviews.csv")
+
+## How mant topics were not allocated to a topic?
+zeros = subset(data, money_related == 0 & delivery_service == 0 & return_service == 0 & products == 0 & customer_service == 0 & brand ==0) # 5998 not categorised
+
+# By year
+zerodata2019 = subset(data, year == 2019 & money_related == 0 & delivery_service == 0 & return_service == 0 & products == 0 & customer_service == 0 & brand ==0)
+data2019 = subset(data, year == 2019)
+
+zerodata2018 = subset(data, year == 2018 & money_related == 0 & delivery_service == 0 & return_service == 0 & products == 0 & customer_service == 0 & brand ==0)
+data2018 = subset(data, year == 2018)
+
+zerodata_old = subset(data, year < 2018 & money_related == 0 & delivery_service == 0 & return_service == 0 & products == 0 & customer_service == 0 & brand ==0)
+data_old = subset(data, year<2018)
+```
+
+Do the sentiment analysis w. SENTIDA
+```{r}
+# Go through column sent_toke and use Sentida on it.Append a new column 'sentiment' with the score for each review.
+library(tidyverse)
+data <- data %>%
+  mutate(sentiment = purrr::map_dbl(.x = sent_toke,
+                                    .f = ~ sentida(.x)))
+data$sentiment = round(data$sentiment, digits = 5)
+
+write.csv(data, file = "sentiment_scored_reviews.csv")
+```
+
+Try out Sentida
+```{r}
+sentida(string = "Det er ogs?? sv??rt at navigere i s??gningen.")
+sentida(string = "det v??re ogs?? sv??r at naviger i s??gning .")
+sentida(string = 'fantastisk service men d??rlig pris') #= 7
+sentida(string = 'fantastisk service men d??rlig pris', output = "mean") #=2.33
+sentida(string = "sende jeg dog min vare som jeg i f??rste omgang have bestille")
+sentida(string = "Send mig dog mine varer som jeg i f??rste omgang har bestilt!")
+```
+
+Sentida divided by topic
+```{r}
+setwd("~/Documents/Cognitive Science/Kandidat/1_Semester/NLP/Exam Project/NLP_Project/Sentiment_analysis")
+data <- read_csv("~/Documents/Cognitive Science/Kandidat/1_Semester/NLP/Exam Project/NLP_Project/4_Sentiment_analysis/sentiment_scored_reviews.csv")
+
+money = subset(data, price == 1)
+delivery = subset(data, delivery == 1)
+return = subset(data, return == 1)
+products = subset(data, products == 1)
+brand = subset(data, brand == 1)
+service = subset(data, service == 1)
+
+mean(money$sentiment)
+mean(delivery$sentiment)
+mean(brand$sentiment)
+mean(return$sentiment)
+mean(products$sentiment)
+mean(service$sentiment)
+
+min(service$sentiment)
+
+```
