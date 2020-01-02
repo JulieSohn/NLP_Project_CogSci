@@ -32,7 +32,7 @@ stoplist = stopwords.words('danish')
 def joinStrings(stringList):
     return ''.join(string for string in stringList)
 
-data = pd.read_csv("/Users/juliesohn/Desktop/zalando_sentiment.csv")
+data = pd.read_csv("sentiment_scored_reviews.csv.csv")
 data.drop(columns = "Unnamed: 0.1")
 
 #%%

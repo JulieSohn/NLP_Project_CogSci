@@ -103,7 +103,7 @@ data.to_csv("topic_categorized_reviews.csv")
 # How many topics overlap?
 #==========================================================================
 
-data = pd.read_csv("/Users/juliesohn/Desktop/sentiment_scored_reviews.csv")
+data = pd.read_csv("sentiment_scored_reviews.csv")
 data = data.drop(columns = "Unnamed: 0.1")
 data = data.drop(columns = "X1")
 data.shape # 19481, 16
