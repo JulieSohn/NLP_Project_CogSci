@@ -10,7 +10,6 @@
         - Customer service
         - Brand
     - Tokenise, bigrams, frequency distribution and plot
-    - WordCloud
 '''
 #===========================================================================================
 #%%
@@ -54,6 +53,9 @@ data2012_17 = data[data.year < 2018]    # Shape: 10524,17
 #data2012_17.to_csv("data2012_17_results.csv")
 
 #%%
+
+# When running the code below, make sure to only run one time period at a time. 
+
 #==========
 # Money
 #==========
