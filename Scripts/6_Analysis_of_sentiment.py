@@ -49,9 +49,9 @@ data2019 = data[data.year == 2019]      # Shape: 5606,17
 data2018 = data[data.year == 2018]      # Shape: 3351,17
 data2012_17 = data[data.year < 2018]    # Shape: 10524,17
 
-data2019.to_csv("data2019_results.csv")
-data2018.to_csv("data2018_results.csv")
-data2012_17.to_csv("data2012_17_results.csv")
+#data2019.to_csv("data2019_results.csv")
+#data2018.to_csv("data2018_results.csv")
+#data2012_17.to_csv("data2012_17_results.csv")
 
 #%%
 #==========
@@ -199,16 +199,16 @@ sentences_pos = [money_pos["sent_toke"],
                 brand_pos["sent_toke"],
                 ]
 
-def bigramming(noget):
-    for sentences in noget:
-        all_reviews = joinStrings(sentences)
+def bigramming(text):
+    for sentence in text:
+        all_reviews = joinStrings(sentence)
         toke = nltk.word_tokenize(all_reviews) 
 
         words = []
         for i in toke:
             if not i in stoplist:
                 words.append(i)
-    
+
         bigrams = nltk.bigrams(words)
         freq = nltk.FreqDist(bigrams)
         freq.plot(20)
