@@ -54,7 +54,7 @@ data2012_17 = data[data.year < 2018]    # Shape: 10524,17
 
 #%%
 
-# When running this, make sure to only run the code for one time period at a time.
+# When running the code below, make sure to only run one time period at a time. 
 
 #==========
 # Money
