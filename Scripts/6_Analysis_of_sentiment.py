@@ -10,7 +10,6 @@
         - Customer service
         - Brand
     - Tokenise, bigrams, frequency distribution and plot
-    - WordCloud
 '''
 #===========================================================================================
 #%%
@@ -49,11 +48,14 @@ data2019 = data[data.year == 2019]      # Shape: 5606,17
 data2018 = data[data.year == 2018]      # Shape: 3351,17
 data2012_17 = data[data.year < 2018]    # Shape: 10524,17
 
-data2019.to_csv("data2019_results.csv")
-data2018.to_csv("data2018_results.csv")
-data2012_17.to_csv("data2012_17_results.csv")
+#data2019.to_csv("data2019_results.csv")
+#data2018.to_csv("data2018_results.csv")
+#data2012_17.to_csv("data2012_17_results.csv")
 
 #%%
+
+# When running the code below, make sure to only run one time period at a time. 
+
 #==========
 # Money
 #==========
@@ -199,54 +201,19 @@ sentences_pos = [money_pos["sent_toke"],
                 brand_pos["sent_toke"],
                 ]
 
-def bigramming(noget):
-    for sentences in noget:
-        all_reviews = joinStrings(sentences)
+def bigramming(text):
+    for sentence in text:
+        all_reviews = joinStrings(sentence)
         toke = nltk.word_tokenize(all_reviews) 
 
         words = []
         for i in toke:
             if not i in stoplist:
                 words.append(i)
-    
+
         bigrams = nltk.bigrams(words)
         freq = nltk.FreqDist(bigrams)
         freq.plot(20)
 
 bigramming(sentences_neg)
 bigramming(sentences_pos)
-
-#%%
-#=======================================================
-# WordCloud function
-#=======================================================
-
-from wordcloud import WordCloud
-import matplotlib.pyplot as plt
-
-def show_wordcloud(data, title = None):
-    wordcloud = WordCloud(
-        background_color = 'white',
-        max_words = 200,
-        max_font_size = 40, 
-        scale = 3,
-        random_state = 42
-    ).generate(str(data))
-
-    fig = plt.figure(1, figsize = (20, 20))
-    plt.axis('off')
-    if title: 
-        fig.suptitle(title, fontsize = 20)
-        fig.subplots_adjust(top = 2.3)
-
-    plt.imshow(wordcloud)
-    plt.show()
-    
-# Print wordcloud
-show_wordcloud(data["sent_toke"])
-
-for i in sentences_neg:
-    show_wordcloud(i)
-
-for i in sentences_pos:
-    show_wordcloud(i)
